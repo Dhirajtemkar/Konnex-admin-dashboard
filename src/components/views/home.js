@@ -22,6 +22,7 @@ export default function Home() {
                 <Route path={'/home/index/settings'} component={() => <Settings page={"new"} />} />
                 <Redirect from="*" to="/home/index/" />
             </Switch>
+            <div style={{height:"100vh"}}/>
         </div>
     )
 }

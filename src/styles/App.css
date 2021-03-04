@@ -1,0 +1,89 @@
+.link {
+  text-decoration: none;
+  color: rgba(128, 128, 128, 0.542);
+  font-weight: 500;
+  font-size: 0.9em;
+}
+
+.Dashboard {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+}
+
+.mainNav {
+  flex: 0.15;
+  width: 30vh;
+  height: 100vh;
+  position: fixed;
+  /* background: rgb(221, 221, 221); */
+  /* padding-left: 2em; */
+  border-right: 2px solid rgba(128, 128, 128, 0.15);
+  z-index: 10;
+}
+
+.mainRoute {
+  display: flex;
+  flex-direction: row;
+  /* flex: 0.8; */
+  width: 100%;
+  z-index: -1;
+}
+.blockedSpace {
+  width: 30vh;
+  /* border: 1px solid black; */
+}
+.view {
+  flex: 0.8;
+  padding: 2px;
+}
+.mainRoute .navBlock {
+  width: 100%;
+  margin-top: 7vh;
+}
+
+.generalNav,
+.toolNav {
+  list-style-type: none;
+  margin: 0;
+  padding: 0 0.5em;
+}
+.generalNav p,
+.toolNav p {
+  padding-left: 2em;
+  font-weight: 500;
+}
+
+.eachLink {
+  /* list-style-type: none; */
+  margin-top: 1em;
+  padding: 0.5em 0;
+  padding-left: 2em;
+  display: flex;
+  flex-direction: row;
+  border-radius: 3px;
+  /* border: 2px solid black; */
+}
+
+.eachLink:hover {
+  /* border-left: 0.2em solid black; */
+  box-shadow: -0.2em 0px 0px 0px black;
+  padding-left: 1.8em;
+  transition: ease-in-out 0.05s;
+  background: rgba(128, 128, 128, 0.07);
+}
+.active {
+  /* border-left: 0.2em solid black; */
+  box-shadow: -0.2em 0px 0px 0px black;
+  padding-left: 2em;
+  transition: ease-in-out 0.05s;
+  background: rgba(128, 128, 128, 0.2);
+}
+.activeLink {
+  color: rgb(0, 0, 0);
+}
+
+.eachLink img {
+  margin-right: 0.5em;
+}
