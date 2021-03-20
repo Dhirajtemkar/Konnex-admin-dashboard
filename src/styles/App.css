@@ -10,6 +10,32 @@
   display: flex;
   flex-direction: row;
   flex: 1;
+  /* background: linear-gradient(180deg, #f0f0f6 0%, #ffffff 100%); */
+}
+
+.logo {
+  width: 85%;
+  /* height: 2em; */
+  /* border: 2px solid black; */
+  background: #0000af;
+  margin: 0.5em auto;
+  padding: 5px;
+  border-radius: 7px;
+  display: flex;
+  flex-direction: row;
+}
+.logo p {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 18px;
+  /* border: 1px solid white; */
+  margin: 7px 3px;
+  flex: 0.9;
+}
+.toggleNavBtn {
+  display: flex;
+  flex-direction: row;
+  margin: 1em;
 }
 
 .mainNav {
@@ -21,43 +47,55 @@
   /* padding-left: 2em; */
   border-right: 2px solid rgba(128, 128, 128, 0.15);
   z-index: 10;
+  /* background: linear-gradient(180deg, #f0f0f6 0%, #ffffff 100%); */
 }
-
+.toggleNav {
+  flex: 0;
+  width: 10vh;
+  height: 100vh;
+  position: fixed;
+  /* background: rgb(221, 221, 221); */
+  /* padding-left: 2em; */
+  border-right: 2px solid rgba(128, 128, 128, 0.15);
+  z-index: 10;
+}
 .mainRoute {
   display: flex;
   flex-direction: row;
-  /* flex: 0.8; */
+  flex: 1;
   width: 100%;
-  z-index: -1;
+  /* z-index: -1; */
+  /* background: linear-gradient(180deg, #f0f0f6 0%, #ffffff 100%); */
 }
 .blockedSpace {
   width: 30vh;
   /* border: 1px solid black; */
 }
 .view {
-  flex: 0.8;
-  padding: 2px;
+  flex: 1;
+  /* padding: 2px; */
 }
-.mainRoute .navBlock {
+.navBlock {
   width: 100%;
-  margin-top: 7vh;
+  margin-top: 5vh;
 }
 
-.generalNav,
 .toolNav {
   list-style-type: none;
   margin: 0;
   padding: 0 0.5em;
 }
-.generalNav p,
+
 .toolNav p {
-  padding-left: 2em;
+  padding-left: 1em;
   font-weight: 500;
+  margin-bottom: 1em;
+  color: #010031;
 }
 
 .eachLink {
   /* list-style-type: none; */
-  margin-top: 1em;
+  margin-top: 0.5em;
   padding: 0.5em 0;
   padding-left: 2em;
   display: flex;
@@ -68,17 +106,21 @@
 
 .eachLink:hover {
   /* border-left: 0.2em solid black; */
-  box-shadow: -0.2em 0px 0px 0px black;
+  box-shadow: -0.2em 0px 0px 0px #0000af;
   padding-left: 1.8em;
-  transition: ease-in-out 0.05s;
-  background: rgba(128, 128, 128, 0.07);
+  transition: ease-in-out 0.1s;
+  background: linear-gradient(90deg, #cad9f3 0%, #eaf2ff26 90%);
+  /* background: rgba(128, 128, 128, 0.07); */
 }
 .active {
   /* border-left: 0.2em solid black; */
-  box-shadow: -0.2em 0px 0px 0px black;
+  box-shadow: -0.2em 0px 0px 0px #0000af;
   padding-left: 2em;
   transition: ease-in-out 0.05s;
-  background: rgba(128, 128, 128, 0.2);
+  /* background: rgba(128, 128, 128, 0.2); */
+  border-radius: 3px;
+
+  background: linear-gradient(90deg, #cad9f3 0%, #eaf2ff26 90%);
 }
 .activeLink {
   color: rgb(0, 0, 0);

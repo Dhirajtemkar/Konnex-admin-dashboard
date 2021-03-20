@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, Route, Switch, useRouteMatch } from "react-router-dom";
 import Auth from '../auth/auth';
-import Issues from './issues';
+import Issues from './issues/issues';
 
 export default function Settings(props) {
     const {url, path} = useRouteMatch();
