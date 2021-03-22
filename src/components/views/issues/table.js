@@ -24,13 +24,19 @@ function ActionBtn (props) {
 
     const handleAction = () => {
         history.push({
-            pathname: '/issues/moreInfo',
+            pathname: '/dashboard/issues/moreInfo',
             state: {
                 name: "dhiraj",
                 tId: props.data.tId,
             }
         })
     }
+
+    const handleSelfAssign = () => {
+        props.selfAssignIssue(props.data)
+        handleClose()
+    }
+
     const handleDeleteModalOpen = () => {
         setDelModal(true)
         // setAnchorEl(null);
@@ -66,9 +72,18 @@ function ActionBtn (props) {
                 <MenuItem onClick={handleAction}>
                     <div >Action</div>
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
-                    <div >Settings</div>
-                </MenuItem>
+                {
+                    props.data.status === "Un-Assigned" ? (
+                        <MenuItem onClick={handleSelfAssign}>
+                            <div >Self Assign</div>
+                        </MenuItem>
+                    ) : (
+                        <MenuItem onClick={handleSelfAssign} disabled>
+                            <div >Self Assign</div>
+                        </MenuItem>
+                    )
+                }
+                
                 <MenuItem onClick={() => handleDeleteModalOpen()}>
                     <div style={{color: "red"}}>Delete</div>
                 </MenuItem>
@@ -95,7 +110,7 @@ function IssueTable(props) {
             }
         })
         history.push({
-            pathname: '/issues/moreInfo',
+            pathname: '/dashboard/issues/moreInfo',
             state: {
                 name: "dhiraj",
                 tId: id,
@@ -130,6 +145,7 @@ function IssueTable(props) {
                 <tr className="tableHeader" style={{borderBottom: "1px solid #0000af"}}>
                     <th><p>Transaction Id</p></th>
                     <th><p>Issue</p></th>
+                    <th><p>Team</p></th>
                     <th><p>Group</p></th>
                     <th><p>Status</p></th>
                     <th><p>Action</p></th>
@@ -140,10 +156,11 @@ function IssueTable(props) {
                             return (
                                 <tr className="eachRow" key={data.tId}  >
                                     <td onClick={() => handleAction(data.tId)}><p style={{marginLeft:"10px"}}>{data.tId}</p></td>
-                                    <td onClick={() => handleAction(data.tId)} width="60%"><p className="issueTd">{data.issue}</p></td>
+                                    <td onClick={() => handleAction(data.tId)} width="55%"><p className="issueTd">{data.issue}</p></td>
+                                    <td onClick={() => handleAction(data.tId)}><p>{data.team}</p></td>
                                     <td onClick={() => handleAction(data.tId)}><p>{data.group}</p></td>
                                     <td onClick={() => handleAction(data.tId)}><p>{data.status}</p></td>
-                                    <td><ActionBtn data={data} /></td>
+                                    <td><ActionBtn data={data} selfAssignIssue={props.selfAssignIssue}/></td>
                                 </tr>   
                             )
                         })

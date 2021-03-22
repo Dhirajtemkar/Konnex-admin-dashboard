@@ -8,66 +8,30 @@ import TextField from '@material-ui/core/TextField';
 import SearchRoundedIcon from '@material-ui/icons/SearchRounded';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
+import SummaryHeader from './SummaryHeader';
 
 
-function SummaryHeader(props){
-    const data = props.data;
-    let summaryData = [
-        {name: "Overdue", data: 40},
-        {name: "Open", data: 26},
-        {name: "On Hold", data: 12},
-        {name: "Due Today", data: 7},
-        {name: "Unassigned", data: 55},
-    ];
 
-    useEffect(() => {
-        let overdue = 0;
-        let open = 0;
-        let onHold = 0;
-        let dueToday = 0;
-        let unAssigned = 0;
+function FilterBtn (props) {
+    const [BtnClicked, setBtnClicked] = useState()
 
-        data.map((e) => {
-            if(e.status === "Un-Assigned"){
-                unAssigned = unAssigned + 1;
-            }
-        })
-
-        summaryData.map((e) => {
-            if(e.name === "Unassigned"){
-                e.data = unAssigned;
-            }
-        })
-    }, [data])
-    
-    const IndividualSummary = ({name, data, index}) => {
-        return (
-            <div className="eachBox">
-                <div className="overViewE">
-                    <p className="overViewT">{name}</p>
-                    <p className={data < 35 ? "overViewN" : "overViewNRed"}>{data}</p>
-                </div>
-                {
-                    index > 3 ? (<div/>) : (<div className="divider" />)
-                }
-                
-            </div>
-        )
+    const handleClick = (val) => {
+        setBtnClicked(!BtnClicked)
+        props.setFilterActive(!BtnClicked)
+        props.featureApplication(props.name)
     }
 
-    return (
-        <div className="header">
-            {/*<p className="headerT..">Issue Summary</p>*/}
-            <div className="tableTitle">
-                Issue Summary
-            </div>
-            <div className="overView">
-            {summaryData.map((e, i) => (<IndividualSummary name={e.name} data={e.data} index={i}/>))}
-            </div>
+    return(
+        <div 
+        onClick={handleClick} 
+        className={
+            BtnClicked ? "selectedFilterBtn" : "filterBtn"}
+        >
+            {props.name}
         </div>
     )
 }
+
 const useStyles = makeStyles((theme) => ({
     button: {
       margin: theme.spacing(0),
@@ -82,17 +46,33 @@ export default function Issues() {
     const [jumpPage, setJumpPage] = useState();
     const [pageSelected, setPageSelected] = useState(1);
     const [searchedIssue, setSearchedIssue] = useState("");
+    const [filtersApplied, setFiltersApplied] = useState([]);
+    const [filterActive, setFilterActive] = useState();
+    const [selfAssignedIssues, setSelfAssignedIssues] = useState([]);
 
     const countOfEachPage = 10;
     const countOfPages = dummyData.length / countOfEachPage;
     
     useEffect(() => {
-        if(searchedIssue){
-
-        } else {
+        if(searchedIssue){} else {
             setDummyData(Data);
         }
+        if(filtersApplied.length !==0){
+            let data = dummyData;
+            const filters = filtersApplied;
+    
+            // filters.map((e) => {
+            //     if(e === "Un-Applied"){
+            //         data = data.filter(i => i.status === "Un-Assigned");
+            //     } else if(e === "Group L1") {
+            //         data = data.filter(i => i.group === "Group L1");
+            //     }
+            // })
+            // console.log(data);
+            // setDummyData(data);
+        }
     }, [searchedIssue])
+
     const paginationBar = () => {
         let listOfPages = [];
         for(let i=0; i<countOfPages; i++){
@@ -107,19 +87,23 @@ export default function Issues() {
         }
         return listOfPages.map((e) => (e));
     }
+
     const jumpPageBtnClick = (val) => {
         // setPageSelected(null) 
         setJumpPage(val)
     }
+
     const handleSearch = (event) => {
         setSearchedIssue(event.target.value)
         if(searchedIssue === ""){
             setDummyData(Data)
         }
     }
+
     function findIssueInfo(issue, searchString){
         return issue.toLowerCase().includes(searchString.toLowerCase());
     }
+
     const handleSearchBtn = () => {
         const data = dummyData;
 
@@ -131,10 +115,12 @@ export default function Issues() {
             setPageSelected(1);
         }
     }
-    const [filterApplied, setFilterApplied] = useState([])
 
-    const handleFilterApplication = (val) => {
-        let data = filterApplied;
+    const featureApplication = (val) => {
+        let dataGot = dummyData;
+        // const filters = filtersApplied;
+
+        let data = filtersApplied;
         let loc = false;
         data.map((e, i) => {
             if(e === val){
@@ -144,11 +130,51 @@ export default function Issues() {
             }
         })
         if (loc === false) {
+            // setFiltersApplied()
             data.push(val)
             // return true;
         }
+        // console.log(data)
+        setFiltersApplied(data)
+
+        // data.map((e) => {
+        //     if(e === "Un-Applied"){
+        //         dataGot = dataGot.filter(i => i.status === "Un-Assigned");
+        //     } else if(e === "Group L1") {
+        //         dataGot = dataGot.filter(i => i.group === "Group L1");
+        //     }
+        // })
+        // console.log(dataGot);
+        // setDummyData(dataGot);
+
+        // let resultData = dataGot.filter(i => )
+    }
+
+    // useEffect(() => {
+    //     let data = dummyData;
+    //     const filters = filtersApplied;
+
+    //     filters.map((e) => {
+    //         if(e === "Un-Applied"){
+    //             data = data.filter(i => i.status === "Un-Assigned");
+    //         } else if(e === "Group L1") {
+    //             data = data.filter(i => i.group === "Group L1");
+    //         }
+    //     })
+    //     // console.log(data);
+    //     setDummyData(data);
+    // },[filterActive])
+
+    const selfAssignIssue = (val) => {
+        let data = selfAssignedIssues;
+
+        const existData = data.filter(i => i.tId === val.tId);
+
+        if(existData.length === 0){
+            data.push(val)
+        } else {}
         console.log(data)
-        setFilterApplied(data)
+        setSelfAssignedIssues(data)
     }
 
     return (
@@ -181,38 +207,37 @@ export default function Issues() {
                         Search
                     </Button>
                     </div>
-                    <div className="filterDiv">
-                        <div 
-                        onClick={() => handleFilterApplication("Un-Assigned")} 
-                        className={
-                            filterApplied.filter(i => i == "Un-Assigned").length !== 1  ? "filterBtn" : "selectedFilterBtn"}
-                        >
-                            Un-Assigned
-                        </div>
-                        <div 
-                        onClick={() => handleFilterApplication("Assigned")} 
-                        className={
-                            filterApplied.filter(i => i == "Assigned").length !== 1 ? "filterBtn" : "selectedFilterBtn"}
-                        >
-                            Assigned
-                        </div>
-                    </div>
+                    {/*<div className="filterDiv">
+                        <FilterBtn name="Un-Assigned" featureApplication={featureApplication} setFilterActive={setFilterActive}/>
+                        <FilterBtn name="Group L1" featureApplication={featureApplication} setFilterActive={setFilterActive}/>
+
+    </div>*/}
                 </div>
                 
                 <IssueTable 
                     dummyData={dummyData} 
                     countOfEachPage={countOfEachPage} 
-                    pageSelected={pageSelected}     
+                    pageSelected={pageSelected}
+                    selfAssignIssue={selfAssignIssue}     
                 />
                 
                 <div className="pagination">
+                    
+                    <ul className="paginationUl">
+                        {
+                            jumpPage === "forward" ? (<div style={{padding:"1vh"}}>...</div>) : null
+                        }
+                        {paginationBar()}
+                        {
+                            jumpPage === "backward" ? (<div style={{padding:"1vh"}}>...</div>) : null
+                        }
+                    </ul>
+                    
                     <div onClick={() => jumpPageBtnClick("backward")} 
                         className={jumpPage === "backward" ? "selectedPaginationIcon" : "paginationIcon"}>
                         <div><ChevronLeftRoundedIcon /></div>
                     </div>
-                    <ul className="paginationUl">
-                        {paginationBar()}
-                    </ul>
+                    <div style={{padding:"1vh"}}>1-5</div>
                     <div onClick={() => jumpPageBtnClick("forward")} 
                         className={jumpPage === "forward" ? "selectedPaginationIcon" : "paginationIcon"}>
                         <div><ChevronRightRoundedIcon /></div>

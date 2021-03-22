@@ -1,8 +1,9 @@
 .link {
   text-decoration: none;
-  color: rgba(128, 128, 128, 0.542);
+  color: rgba(255, 255, 255, 0.651);
   font-weight: 500;
   font-size: 0.9em;
+  justify-content: baseline;
 }
 
 .Dashboard {
@@ -17,7 +18,7 @@
   width: 85%;
   /* height: 2em; */
   /* border: 2px solid black; */
-  background: #0000af;
+  background: #011485;
   margin: 0.5em auto;
   padding: 5px;
   border-radius: 7px;
@@ -27,7 +28,7 @@
 .logo p {
   color: #ffffff;
   font-weight: 600;
-  font-size: 18px;
+  font-size: 15px;
   /* border: 1px solid white; */
   margin: 7px 3px;
   flex: 0.9;
@@ -45,9 +46,10 @@
   position: fixed;
   /* background: rgb(221, 221, 221); */
   /* padding-left: 2em; */
-  border-right: 2px solid rgba(128, 128, 128, 0.15);
+  border-right: -2vh solid white;
   z-index: 10;
   /* background: linear-gradient(180deg, #f0f0f6 0%, #ffffff 100%); */
+  background: #3f50b5;
 }
 .toggleNav {
   flex: 0;
@@ -101,31 +103,96 @@
   display: flex;
   flex-direction: row;
   border-radius: 3px;
+  align-items: center;
+  justify-content: flex-start;
+  z-index: 12;
   /* border: 2px solid black; */
 }
 
 .eachLink:hover {
   /* border-left: 0.2em solid black; */
-  box-shadow: -0.2em 0px 0px 0px #0000af;
+  box-shadow: -0.2em 0px 0px 0px #000f62;
   padding-left: 1.8em;
   transition: ease-in-out 0.1s;
-  background: linear-gradient(90deg, #cad9f3 0%, #eaf2ff26 90%);
+  background: linear-gradient(90deg, #cad9f3c9 0%, #eaf2ff26 90%);
   /* background: rgba(128, 128, 128, 0.07); */
 }
 .active {
   /* border-left: 0.2em solid black; */
-  box-shadow: -0.2em 0px 0px 0px #0000af;
+  box-shadow: -0.2em 0px 0px 0px #000f62;
   padding-left: 2em;
   transition: ease-in-out 0.05s;
   /* background: rgba(128, 128, 128, 0.2); */
   border-radius: 3px;
 
-  background: linear-gradient(90deg, #cad9f3 0%, #eaf2ff26 90%);
+  background: linear-gradient(90deg, #cad9f3c9 0%, #eaf2ff26 90%);
 }
 .activeLink {
-  color: rgb(0, 0, 0);
+  color: white;
+  font-weight: 600;
 }
 
 .eachLink img {
   margin-right: 0.5em;
+}
+
+.decoRight {
+  margin-right: 0vh;
+  position: absolute;
+  right: 0;
+  /* left: 20; */
+  z-index: 1;
+  /* border: 1px solid black; */
+}
+
+.commonNavBar {
+  width: 98.9%;
+  height: 8vh;
+  align-items: center;
+  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: row;
+  /* position: fixed; */
+  background: white;
+  box-shadow: 0px 4px 7px rgba(128, 128, 128, 0.2);
+  padding: 0 0vh 0 2vh;
+  z-index: 20;
+}
+.navIndication {
+  flex: 0.8;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.eachNavIndi {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 500;
+}
+.toggleBtns {
+  flex: 0.2;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.notiBtn {
+  margin-right: 2vh;
+}
+.userInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  /* margin-left: 5vh; */
+  font-size: 16px;
+  font-weight: 500;
+  color: #3f50b5;
+}
+.profileImg {
+  width: 5.5vh;
+  height: 5.5vh;
+  border-radius: 5vh;
+  background: grey;
+  margin-right: 2vh;
 }

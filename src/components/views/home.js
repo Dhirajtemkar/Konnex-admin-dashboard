@@ -52,11 +52,11 @@ export default function Home() {
             <h2>
                 this is the home component.
             </h2>
-            Go to: <Link to="/home/index/settings">Settings</Link>
+            Go to: <Link to="/dashboard/home/index/settings">Settings</Link>
             <Switch>
-                <Route exact path={'/home/index/'} component={() => <Index />} />
-                <Route path={'/home/index/settings'} component={() => <Settings page={"new"} />} />
-                <Redirect from="*" to="/home/index/" />
+                <Route exact path={'/dashboard/home'} component={() => <Index />} />
+                <Route path={'/dashboard/home/index/settings'} component={() => <Settings page={"new"} />} />
+                <Redirect from="*" to="/dashboard/home" />
             </Switch>
             
         </div>

@@ -1,0 +1,153 @@
+.issueInfoMain {
+  padding: 1vh;
+}
+.infoHeader {
+  width: 99%;
+  padding: 1vh 1vh;
+  background: #0000af36;
+  border-radius: 1vh;
+}
+.infoHeader p {
+  font-size: 18px;
+  font-weight: 600;
+  color: #0000af;
+  margin-top: 1.1vh;
+}
+.infoHeader div {
+  font-weight: 600;
+}
+.infoHeader div span {
+  font-size: 18px;
+  color: #0000af;
+  font-weight: 700;
+}
+
+.mainSection {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin-top: 2vh;
+}
+
+.issueInfoFormDiv {
+  flex: 0.63;
+  /* width: 65%; */
+  box-shadow: 4px 4px 8px 0 rgba(0, 0, 0, 0.25),
+    -10px -10px 12px 0 rgba(255, 255, 255, 0.3);
+  border-radius: 1vh;
+  padding: 1vh;
+}
+
+.infoFormHeader {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.096);
+}
+
+.infoFormHeader p {
+  flex: 1;
+  padding-left: 1vh;
+  font-size: 16px;
+  font-weight: 500;
+  color: #0000af;
+}
+
+.eachFormInputArea {
+  width: 80%;
+  margin: 2vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.bottomUpdateBtn {
+  width: 35%;
+  margin: 2vh auto;
+}
+
+.spaceClass {
+  flex: 0.01;
+}
+.nonEditableCard {
+  flex: 0.36;
+  /* border: 1px solid black; */
+  width: 63vh;
+  min-height: 75vh;
+  box-shadow: 4px 4px 8px 0 rgba(0, 0, 0, 0.25),
+    -10px -10px 12px 0 rgba(255, 255, 255, 0.3);
+  padding: 1vh;
+  border-radius: 1vh;
+  /* position: fixed;
+  right: 1vh; */
+}
+.nonEditableHeader {
+  width: 95%;
+  margin: auto;
+  font-size: 18px;
+  font-weight: 500;
+  /* border-bottom: 1px solid rgba(0, 0, 0, 0.04); */
+  height: 4vh;
+  color: rgba(0, 0, 0, 0.315);
+}
+
+.eachSection {
+  width: 95%;
+  color: rgb(105, 105, 105);
+  display: flex;
+  flex-direction: row;
+  margin: auto;
+  /* justify-content: center; */
+  align-items: center;
+  padding-left: 1vh;
+  /* border: 1px solid black; */
+  /* line-height: 15px; */
+  margin-bottom: 2vh;
+  margin-top: 1vh;
+}
+.eachSectionLabel {
+  font-weight: 500;
+  color: #0000afa2;
+  margin-right: 1em;
+  flex: 0.5;
+  /* width: 40%; */
+  /* border: 1px solid black; */
+}
+.eachSectionData {
+  /* width: 63%; */
+  flex: 1;
+  /* border: 1px solid rgba(0, 0, 0, 0.13); */
+  /* min-height: 2em; */
+  padding: 0.2em;
+  border-radius: 3px;
+  align-items: baseline;
+}
+
+.borderDiv {
+  width: 95%;
+  margin: auto;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.219);
+  margin-bottom: 3vh;
+}
+
+.bottomEmailBtn {
+  width: 100%;
+  padding: auto;
+  /* border: 1px solid black; */
+}
+.emailBtn {
+  margin-left: 25vh;
+  margin-bottom: 2vh;
+}
+
+.footNote {
+  width: 100%;
+  font-size: 11px;
+  color: grey;
+  padding-left: 2vh;
+}
+
+.footNote span {
+  color: red;
+  margin-right: 5px;
+}

@@ -7,7 +7,7 @@ function Dashboard(props) {
   return (
     <div className="Dashboard">
       <DashboardNavBar />
-      <DashboardNavTree />
+      <DashboardNavTree user={props.user} handleUser={props.handleUser} />
     </div>
   );
 }
