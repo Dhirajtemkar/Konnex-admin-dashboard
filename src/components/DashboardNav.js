@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import {Link, Route, Switch, useLocation, Redirect} from 'react-router-dom';
 import Auth from './auth/auth';
-import Home from './views/home';
+import Home from './views/home/home';
 import Issues from './views/issues/issues';
 import Settings from './views/settings';
 import MenuRoundedIcon from '@material-ui/icons/MenuRounded';
@@ -110,7 +110,7 @@ export function DashboardNavBar() {
     }, [toggleNav])
     return (
         <div className={`${toggleNav ? "mainNav" : "toggleNav"}`}>
-            <div className="logo">
+            <div className="logo1">
                 {
                     toggleNav ? (<p>Forward</p>) : (<div/>)
                 }

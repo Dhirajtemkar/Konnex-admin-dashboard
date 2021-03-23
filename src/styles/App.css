@@ -33,6 +33,26 @@
   margin: 7px 3px;
   flex: 0.9;
 }
+
+.logo1 {
+  width: 85%;
+  /* height: 2em; */
+  /* border: 2px solid black; */
+  background: #011485;
+  margin: 0.5em auto;
+  padding: 5px;
+  border-radius: 7px;
+  display: flex;
+  flex-direction: row;
+}
+.logo1 p {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 15px;
+  /* border: 1px solid white; */
+  margin: 7px 3px;
+  flex: 0.9;
+}
 .toggleNavBtn {
   display: flex;
   flex-direction: row;

@@ -18,7 +18,7 @@ function CommonNavBar(props) {
         //     words[i] = words[i][0].toUpperCase() + words[i].substr(1);
         // }
         words.shift()
-        console.log(words)
+        // console.log(words)
         setArr(words)
     })
     return (

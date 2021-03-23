@@ -99,7 +99,8 @@ function ActionBtn (props) {
 }
 
 function IssueTable(props) {
-    const dummyData = props.dummyData ? props.dummyData : [];
+    let dummyData = props.dummyData ? props.dummyData : [];
+    // let dummyData = props.dummyData;
     // const [dummyData, setDummyData] = useState()
     const history = useHistory();
     const handleAction = (id) => {
@@ -124,7 +125,10 @@ function IssueTable(props) {
     // const tableDisplay = () => {
 
     // }
-    
+    useEffect(() => {
+        setDataDisplayed(props.dataArr)
+    }, [props.dataArr])
+
     useEffect(() => {
         let arr = [];
         const lastElement = (props.countOfEachPage * props.pageSelected) + 1;

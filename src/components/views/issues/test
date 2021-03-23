@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useState, useEffect} from 'react'
 import '../../../styles/issues.css';
 import IssueTable from './table';
 import { Data } from "../../../assets/data/dummyData";
@@ -11,12 +11,7 @@ import Button from '@material-ui/core/Button';
 import SummaryHeader from './SummaryHeader';
 import Fire from "../../../Fire";
 import firebase from "firebase";
-import lodash from 'lodash';
-import isEqual from 'lodash/isEqual'
-// Load the full build.
-var _ = require('lodash');
-// Load the core build.
-var _ = require('lodash/core');
+
 
 function FilterBtn (props) {
     const [BtnClicked, setBtnClicked] = useState()
@@ -38,50 +33,9 @@ function FilterBtn (props) {
     )
 }
 
-const useStyles = makeStyles((theme) => ({
-    button: {
-      margin: theme.spacing(0),
-      marginLeft: theme.spacing(1),
-    },
-  }));
-
-// Hook
-function usePrevious(value) {
-    // The ref object is a generic container whose current property is mutable ...
-    // ... and can hold any value, similar to an instance property on a class
-    const ref = useRef();
-
-    // Store current value in ref
-    useEffect(() => {
-        ref.current = value;
-    }, [value]); // Only re-run if value changes
-
-    // Return previous value (happens before update in useEffect above)
-    return ref.current;
-}
-let dataArr = [];
-export default function Issues(props) {
+ function RetrivalDataDB () {
     const db = Fire.firestore();
-
-    const [dataFromDb, setDataFromDb] = useState([])
-    const [dummyData, setDummyData] = useState([]);
-    const originalData = Data;
-    const classes = useStyles();
-    const [jumpPage, setJumpPage] = useState();
-    const [pageSelected, setPageSelected] = useState(1);
-    const [searchedIssue, setSearchedIssue] = useState("");
-    const [filtersApplied, setFiltersApplied] = useState([]);
-    // const [filterActive, setFilterActive] = useState();
-    const [selfAssignedIssues, setSelfAssignedIssues] = useState([]);
-
-    const countOfEachPage = 10;
-    const countOfPages = dummyData ? dummyData.length / countOfEachPage : 0;
-    
-    const prevData = usePrevious(dummyData);
-
-    
-    useEffect(() =>{
-        // let data = Data;
+    let data = [];
         // run only once to initialize
         db.collection("testUserData")
           .onSnapshot(snapshot => {
@@ -108,26 +62,92 @@ export default function Issues(props) {
                     team:doc.data().team,
                     status:"",
                 };
-                dataArr.push(ob);
+                data.push(ob);
             })
-            setDummyData(dataArr);
-            setDataFromDb(dataArr);    
+            
         });
+        return data
+ }
 
-        
-        // if(prevData && !_.isEqual(prevData, data)) {
-        // }
-        console.log(dataArr);
-    }, [dataArr])
+const useStyles = makeStyles((theme) => ({
+    button: {
+      margin: theme.spacing(0),
+      marginLeft: theme.spacing(1),
+    },
+  }));
 
+export default function Issues() {
+    const db = Fire.firestore();
+    // let dataArr = RetrivalDataDB();
+    const [dummyData, setDummyData] = useState([]);
+    const originalData = Data;
+    const classes = useStyles();
+    const [jumpPage, setJumpPage] = useState();
+    const [pageSelected, setPageSelected] = useState(1);
+    const [searchedIssue, setSearchedIssue] = useState("");
+    const [filtersApplied, setFiltersApplied] = useState([]);
+    const [filterActive, setFilterActive] = useState();
+    const [selfAssignedIssues, setSelfAssignedIssues] = useState([]);
+
+    
+    useEffect(() => {
+        let data = [];
+        // run only once to initialize
+        db.collection("testUserData")
+          .onSnapshot(snapshot => {
+            let ob = {
+                tId: "",
+                email:"",
+                name:"",
+                issue:"", //issue is description in db
+                priority: "",
+                dateTime:"",
+                group:"",
+                team:"",
+                status:"",
+            } 
+            snapshot.docs.map(doc => {
+                ob = {
+                    tId: doc.id,
+                    email: doc.data().email,
+                    name:doc.data().name,
+                    issue:doc.data().description, 
+                    priority: doc.data().priority,
+                    dateTime:doc.data().dateTime,
+                    group:doc.data().group,
+                    team:doc.data().team,
+                    status:"",
+                };
+                data.push(ob);
+            })
+            
+        });
+        // let data = RetrivalDataDB();
+        setDummyData(data);
+        // console.log(data)
+      }, []);
+
+      const countOfEachPage = 10;
+      const countOfPages = dummyData ? (dummyData.length / countOfEachPage) : null;
     useEffect(() => {
         if(searchedIssue){} else {
-            setDummyData(dataFromDb);
+            let arr = RetrivalDataDB();
+            setDummyData(arr);
         }
-        // if(filtersApplied.length !==0){
-        //     let data = dummyData;
-        //     const filters = filtersApplied;
-        // }
+        if(filtersApplied.length !==0){
+            let data = dummyData;
+            const filters = filtersApplied;
+    
+            // filters.map((e) => {
+            //     if(e === "Un-Applied"){
+            //         data = data.filter(i => i.status === "Un-Assigned");
+            //     } else if(e === "Group L1") {
+            //         data = data.filter(i => i.group === "Group L1");
+            //     }
+            // })
+            // console.log(data);
+            // setDummyData(data);
+        }
     }, [searchedIssue])
 
     const paginationBar = () => {
@@ -153,7 +173,8 @@ export default function Issues(props) {
     const handleSearch = (event) => {
         setSearchedIssue(event.target.value)
         if(searchedIssue === ""){
-            setDummyData(dataFromDb)
+            let data = RetrivalDataDB()
+            setDummyData(data)
         }
     }
 
@@ -165,7 +186,7 @@ export default function Issues(props) {
         const data = dummyData;
 
         if(searchedIssue === null || searchedIssue === "") {
-            setDummyData(dataFromDb)
+            setDummyData(Data)
         } else {
             let searchResult = data.filter(i => findIssueInfo(i.issue, searchedIssue));
             setDummyData(searchResult);
@@ -173,24 +194,54 @@ export default function Issues(props) {
         }
     }
 
-    // const featureApplication = (val) => {
-    //     let dataGot = dummyData;
+    const featureApplication = (val) => {
+        let dataGot = dummyData;
+        // const filters = filtersApplied;
 
-    //     let data = filtersApplied;
-    //     let loc = false;
-    //     data.map((e, i) => {
-    //         if(e === val){
-    //             data.splice(i, 1);
-    //             loc = true;
+        let data = filtersApplied;
+        let loc = false;
+        data.map((e, i) => {
+            if(e === val){
+                data.splice(i, 1);
+                loc = true;
+                // return false;
+            }
+        })
+        if (loc === false) {
+            // setFiltersApplied()
+            data.push(val)
+            // return true;
+        }
+        // console.log(data)
+        setFiltersApplied(data)
+
+        // data.map((e) => {
+        //     if(e === "Un-Applied"){
+        //         dataGot = dataGot.filter(i => i.status === "Un-Assigned");
+        //     } else if(e === "Group L1") {
+        //         dataGot = dataGot.filter(i => i.group === "Group L1");
+        //     }
+        // })
+        // console.log(dataGot);
+        // setDummyData(dataGot);
+
+        // let resultData = dataGot.filter(i => )
+    }
+
+    // useEffect(() => {
+    //     let data = dummyData;
+    //     const filters = filtersApplied;
+
+    //     filters.map((e) => {
+    //         if(e === "Un-Applied"){
+    //             data = data.filter(i => i.status === "Un-Assigned");
+    //         } else if(e === "Group L1") {
+    //             data = data.filter(i => i.group === "Group L1");
     //         }
     //     })
-    //     if (loc === false) {
-    //         data.push(val)
-    //     }
-    //     // console.log(data)
-    //     setFiltersApplied(data)
-
-    // }
+    //     // console.log(data);
+    //     setDummyData(data);
+    // },[filterActive])
 
     const selfAssignIssue = (val) => {
         let data = selfAssignedIssues;
@@ -206,7 +257,7 @@ export default function Issues(props) {
 
     return (
         <div>
-            <SummaryHeader data={originalData} />
+            <SummaryHeader data={Data} />
             {/*this is where the table view will be in issues to view differnt incomming issues*/}
             <div className="issuesTableView">
                 <div className="tableTitle">
@@ -237,11 +288,11 @@ export default function Issues(props) {
                     {/*<div className="filterDiv">
                         <FilterBtn name="Un-Assigned" featureApplication={featureApplication} setFilterActive={setFilterActive}/>
                         <FilterBtn name="Group L1" featureApplication={featureApplication} setFilterActive={setFilterActive}/>
+
     </div>*/}
                 </div>
                 
                 <IssueTable 
-                    dataArr={dataArr}
                     dummyData={dummyData} 
                     countOfEachPage={countOfEachPage} 
                     pageSelected={pageSelected}
