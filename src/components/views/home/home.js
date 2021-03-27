@@ -9,48 +9,24 @@ import firebase from 'firebase';
 
 import { makeStyles } from '@material-ui/core/styles';
 import VerticalBar from './VerticalChart';
-const useStyles = makeStyles((theme) => ({
-    root: {
-    //   width: 500,
-    },
-    typography: {
-      padding: theme.spacing(2),
-    },
-  }));
+import SummaryHeader from '../issues/SummaryHeader';
 
-function Index(params) {
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const [open, setOpen] = React.useState(false);
-    const [placement, setPlacement] = React.useState();
-    const classes = useStyles();
-    const handleClick = (newPlacement) => (event) => {
-        setAnchorEl(event.currentTarget);
-        setOpen((prev) => placement !== newPlacement || !prev);
-        setPlacement(newPlacement);
-    };
-    return(
-        <div>
-        <h2>This is the index page inside home</h2>
-        <Popper open={open} anchorEl={anchorEl} placement={placement} transition>
-            {({ TransitionProps }) => (
-                <Fade {...TransitionProps} timeout={350}>
-                    <div className="popperDiv">The content of the Popper.</div>
-                </Fade>
-            )}
-        </Popper>
-            <Button onClick={handleClick('bottom-end')}>Action</Button>
-            <div style={{height:"100vh"}}/>
-        </div>
-    )
-}
+import ReactLoading from 'react-loading';
 
-export default function Home() {
+export default function Home({ page }) {
     let db = Fire.firestore();
     const [dataFromDb, setDataFromDb] = useState()
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(true);
+    const [groupLabel, setGroupLabel] = useState();
+    const [groupCount, setGroupCount] = useState();
+    const [summaryLabel, setSummaryLabel] = useState();
+    const [summaryCount, setSummaryCount] = useState();
+    const [summaryDataObj, setSummaryDataObj] = useState([]);
 
     useEffect(() =>{
         let dataArr = [];
+        let sumData = [];
+
         // run only once to initialize
         db.collection("testUserData")
           .onSnapshot(snapshot => {
@@ -75,45 +51,157 @@ export default function Home() {
                     dateTime:doc.data().dateTime,
                     group:doc.data().group,
                     team:doc.data().team,
-                    status:"",
+                    status:doc.data().status ? doc.data().status: "open",
                 };
                 dataArr.push(ob);
             })
             setDataFromDb(dataArr);
-            setIsLoading(false)
+            
+
+            dataArr.map((e) => {
+                let s = e.status ? e.status : "open";
+                let p = e.priority;
+                if(sumData.filter(a => a.name.toLowerCase() === s.toLowerCase()).length < 1){
+                    let sCount = dataArr.filter(i => i.status === s).length;
+                    sumData.push({
+                        name: s,
+                        data: sCount,
+                    })
+                }
+                if(sumData.filter(a => a.name.toLowerCase() === p.toLowerCase()).length < 1) {
+                    let pCount = dataArr.filter(i => i.priority === p).length;
+                    sumData.push({
+                        name: p,
+                        data: pCount,
+                    })
+                }
+            })
+            setSummaryDataObj(sumData);
+
+            setTimeout(function() {
+                //your code to be executed after 1 second
+                setIsLoading(false)
+              }, 1000);
+
+            // let data = dataFromDb ? dataFromDb : [];
+            // let dcount = [];
+            // let gLabel = [];
+            // let gCount = [];
+
+            // let scount = summaryDataObj ? summaryDataObj : [];
+            // let sLabel = [];
+            // let sCount = [];
+
+            // // {
+            // //     name: "",
+            // //     count: "",
+            // // }
+            // data.map((e) => {
+            //     let g = e.group;
+            //     if(dcount.filter(a => a.name === g).length < 1) {
+            //         let count = data.filter(i => i.group === g).length;
+            //         dcount.push({
+            //             name: g,
+            //             count: count,
+            //         })
+            //     }
+            // })
+
+            // dcount.map((e) => {
+            //     gLabel.push(e.name);
+            //     gCount.push(e.count);
+            // })
+
+            // scount.map((e) => {
+            //     sLabel.push(e.name);
+            //     sCount.push(e.data);
+            // })
+
+            // // console.log(dcount);
+            // setGroupCount(dcount);
+            // setGroupLabel(gLabel);
+            // setGroupCount(gCount);
+
+            // setSummaryLabel(sLabel);
+            // setSummaryCount(sCount);
         })
 
         // setDummyData(dataArr);
         // if(prevData && !_.isEqual(prevData, data)) {
         // }
-        console.log(dataArr);
-    }, [dataFromDb])
+        // console.log(sumData);
+        // dataFromDb
+    }, [page])
+
+    useEffect(() => {
+        // handle types of groups and count of them
+        let data = dataFromDb ? dataFromDb : [];
+        let dcount = [];
+        let gLabel = [];
+        let gCount = [];
+
+        let scount = summaryDataObj ? summaryDataObj : [];
+        let sLabel = [];
+        let sCount = [];
+
+        // {
+        //     name: "",
+        //     count: "",
+        // }
+        data.map((e) => {
+            let g = e.group;
+            if(dcount.filter(a => a.name === g).length < 1) {
+                let count = data.filter(i => i.group === g).length;
+                dcount.push({
+                    name: g,
+                    count: count,
+                })
+            }
+        })
+
+        dcount.map((e) => {
+            gLabel.push(e.name);
+            gCount.push(e.count);
+        })
+
+        scount.map((e) => {
+            sLabel.push(e.name);
+            sCount.push(e.data);
+        })
+
+        // console.log(dcount);
+        setGroupCount(dcount);
+        setGroupLabel(gLabel);
+        setGroupCount(gCount);
+
+        setSummaryLabel(sLabel);
+        setSummaryCount(sCount);
+        // console.log(sLabel, sCount)
+    }, [dataFromDb, summaryDataObj])
 
     return (
         <div>
-            <h2>
-                this is the home component.
-            </h2>
-            <VerticalBar />
-            <div>
-                {
-                    isLoading === false ? dataFromDb && dataFromDb.map((e)=>{
-                        return(
-                            <div>
-                                {e.name}
-                                {e.email}
-                            </div>
-                        )
-                    }) : null
-                }
-            </div>
-            {/*Go to: <Link to="/dashboard/home/index/settings">Settings</Link>
-            <Switch>
-                <Route exact path={'/dashboard/home'} component={() => <Index />} />
-                <Route path={'/dashboard/home/index/settings'} component={() => <Settings page={"new"} />} />
-                <Redirect from="*" to="/dashboard/home" />
-            </Switch>*/}
-            
+            {
+                isLoading ? (
+                    <div style={{marginLeft:"50%", marginTop: "20%"}}>
+                        <ReactLoading type={"spin"} color={"#0000af"} />
+                    </div>
+                ) : (
+                <div>
+                    <SummaryHeader summaryDataObj={summaryDataObj}/>
+                    <div style={{display:"flex", marginTop:"4vh"}}>            
+                        <VerticalBar groupLabel={groupLabel} groupCount={groupCount} title={"Groups of Issues"}/>
+                        <VerticalBar groupLabel={summaryLabel} groupCount={summaryCount} title={"Summary of Issues"}/>
+                    </div>
+                    {/*Go to: <Link to="/dashboard/home/index/settings">Settings</Link>
+                    <Switch>
+                        <Route exact path={'/dashboard/home'} component={() => <Index />} />
+                        <Route path={'/dashboard/home/index/settings'} component={() => <Settings page={"new"} />} />
+                        <Redirect from="*" to="/dashboard/home" />
+                    </Switch>*/}
+                    
+                </div>)
+            }
         </div>
     )
 }

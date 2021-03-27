@@ -5,7 +5,7 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
 import { Button } from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
+import SendRoundedIcon from '@material-ui/icons/SendRounded';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -60,19 +60,19 @@ Fade.propTypes = {
   onExited: PropTypes.func,
 };
 
-export default function SpringModal(props) {
+export default function SuccessUpdateModel(props) {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(props.delOpen);
+//   const [open, setOpen] = React.useState(props.delOpen);
 
-  const handleOpen = () => {
-    setOpen(props.delOpen);
-  };
+//   const handleOpen = () => {
+//     setOpen(props.delOpen);
+//   };
 
-  const handleClose = () => {
-    // props.handleDeleteModalClose()
-    // setOpen(false);
-    props.setDelModal(false)
-  };
+//   const handleClose = () => {
+//     // props.handleDeleteModalClose()
+//     // setOpen(false);
+//     props.setDelModal(false)
+//   };
 
   return (
     <div>
@@ -80,8 +80,8 @@ export default function SpringModal(props) {
         aria-labelledby="spring-modal-title"
         aria-describedby="spring-modal-description"
         className={classes.modal}
-        open={props.delModal}
-        onClose={props.delClose}
+        open={props.successUpdateModel}
+        onClose={props.handleSuccessModelClose}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
@@ -90,31 +90,17 @@ export default function SpringModal(props) {
       >
         <Fade in={props.delModal}>
           <div className={classes.paper}>
-            <h2 id="spring-modal-title">Delete Issue Entry</h2>
-            <p id="spring-modal-description">Are your sure you want to delete issue with id <span style={{fontWeight:"bold", color: "red"}}>{props.delInfo.tId}</span>.</p>
-            <div style={{width:"100%", display:"flex", flexDirection:"row",}}>
+            <h2 id="spring-modal-title">Updated Successfully!</h2>
+            <p id="spring-modal-description">Data Updated successfully containing information about the issue with id <span style={{fontWeight:"bold"}}>{props.data.tId}</span>.</p>
+            <div style={{width:"80%", display:"flex", flexDirection:"row", margin:"auto"}}>
               <Button 
                 variant="contained" 
                 // size="small" 
                 color="primary" 
                 className={classes.margin}
-                onClick={props.delClose}
+                onClick={props.handleSuccessModelClose}
               >
-                Cancel
-              </Button>
-              <div style={{flex:0.5}}/>
-              <Button
-                variant="contained"
-                color="secondary"
-                size="small"
-                className={classes.button}
-                startIcon={<DeleteIcon />}
-                onClick={() => {
-                  props.handleDbDelete()
-                  props.delClose()
-                }}
-              >
-                Delete
+                Done
               </Button>
             </div>
           </div>

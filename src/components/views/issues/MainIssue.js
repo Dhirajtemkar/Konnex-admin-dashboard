@@ -5,7 +5,7 @@ import Issues from './issues';
 import Fire from "../../../Fire";
 import firebase from "firebase";
 
-function MainIssue() {
+function MainIssue(props) {
     // const db = Fire.firestore();
     // const [dataFromDb, setDataFromDb] = useState([])
 
@@ -56,11 +56,16 @@ function MainIssue() {
                 exact 
                 path="/dashboard/issues/" 
                 // component={Issues}
-                render={() => <Issues />} 
+                render={() => <Issues user={props.user}/>} 
                 />
                 <Route path="/dashboard/issues/moreInfo" component={IssueInfo} />
 
-                <Route exact path="/dashboard/issues" component={Issues} />
+                <Route 
+                exact 
+                path="/dashboard/issues" 
+                // component={Issues}
+                render={() => <Issues user={props.user}/>} 
+                />
             </Switch>
         </div>
     )

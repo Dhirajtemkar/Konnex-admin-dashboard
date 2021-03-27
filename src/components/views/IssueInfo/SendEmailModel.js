@@ -109,6 +109,11 @@ export default function SendEmailModel(props) {
                 // size="small"
                 className={classes.button}
                 endIcon={<SendRoundedIcon />}
+                onClick={() => {
+                  props.sendEmail()
+                  props.delClose()
+                  // props.handleSuccessModalOpen()
+                }}
               >
                 Send
               </Button>

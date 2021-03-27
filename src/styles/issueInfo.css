@@ -151,3 +151,33 @@
   color: red;
   margin-right: 5px;
 }
+
+.issueInfoHeaderInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.noteCard {
+  padding: 1vh;
+  border: 1px solid goldenrod;
+  background: rgba(255, 217, 0, 0.2);
+  display: flex;
+  align-items: center;
+  margin-left: 2vh;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+  border-bottom-right-radius: 7px;
+  margin-top: -4vh;
+  font-size: 12px;
+}
+.noteTriangle {
+  width: 0;
+  height: 0;
+  border-top: 3px solid transparent;
+  border-right: 6px solid goldenrod;
+  border-bottom: 3px solid transparent;
+  position: absolute;
+  left: 81vh;
+  top: 19.2vh;
+}

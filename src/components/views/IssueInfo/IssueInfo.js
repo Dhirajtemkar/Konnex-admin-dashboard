@@ -8,10 +8,9 @@ import TextField from '@material-ui/core/TextField';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-// import FormControl from '@material-ui/core/FormControl';
-// import FormLabel from '@material-ui/core/FormLabel';
-
-
+import Fire from "../../../Fire";
+import firebase from "firebase";
+import SuccessUpdateModel from "./SuccessUpdateModel";
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -19,31 +18,30 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 function IssueInfo(props) {
-    // console.log(props.location.state);
+    const db = Fire.firestore();
     const classes = useStyles();
     const IssueViewed = props.location.state.issueInfo ? props.location.state.issueInfo : {};
-    const [editBtn, setEditBtn] = useState();
+    const [editBtn, setEditBtn] = useState(false);
     const [value, setValue] = React.useState("");
     const [issueUpdate, setIssueUpdate] = useState({
-
+        tId: IssueViewed.tId, 
+        name:IssueViewed.name, 
+        email:IssueViewed.email, 
+        dateTime:IssueViewed.dateTime, 
+        description:IssueViewed.issue, 
+        group: IssueViewed.group, 
+        status:"",
+        team: IssueViewed.team,
+        solution: "",
+        resTime: "",
+        assignedTo: "",
     })
-    // {tId:"", 
-    // name:"", 
-    // email:"", 
-    // timestamp:"", 
-    // issue:"", 
-    // group:"", 
-    // status:"",
-    // team: "",
-    // solution: "",
-    // resTime: "",
-    // assignedTo: "",}
 
-    useEffect(() => {
-        const data = IssueViewed;
-        setValue(data.resTime)
-        setIssueUpdate(data);
-    }, [])
+    // useEffect(() => {
+    //     const data = IssueViewed;
+    //     setValue(data.resTime)
+    //     setIssueUpdate(data);
+    // }, [])
 
     const updateValue = (type, val) => {
         let data = issueUpdate;
@@ -89,15 +87,43 @@ function IssueInfo(props) {
         setIssueUpdate(data)
         setValue(event.target.value);
     };
+    const [successUpdateModel, setSuccessUpdateModel] = useState(false);
 
+    const handleSuccessModelClose = () => {
+        setSuccessUpdateModel(false)
+    }
+    const handleUpdateBtn = () => {
+        db.collection("testUserData").doc(IssueViewed.tId).update({
+            // tId: IssueViewed.tId, 
+            // name:IssueViewed.name, 
+            // email:IssueViewed.email, 
+            // dateTime:IssueViewed.dateTime, 
+            // description:IssueViewed.issue, 
+            group:issueUpdate.group, 
+            status:issueUpdate.status,
+            team:issueUpdate.team,
+            solution:issueUpdate.solution,
+            resTime: issueUpdate.resTime,
+            assignedTo: issueUpdate.assignedTo,
+        });
+        // setSuccessUpdateModel(true);
+    }
     return (
         <div className="issueInfoMain">
+            
             <div className="infoHeader">
                 <p>IssueInfo</p>
-                <div>Issue Id: <span>{IssueViewed.tId}</span></div>
+                <div className="issueInfoHeaderInfo">
+                    <div>Issue Id: <span>#{IssueViewed.tId}</span></div>
+                    <div className="noteCard">
+                        <div className="noteTriangle"/>
+                        <span style={{color:"goldenrod", fontSize:"12px"}}>note:</span> ticket raised by bot.
+                    </div>
+                </div>
             </div>
-
+ 
             {/*this is the main section*/}
+
             <div className="mainSection">
                 {/*this is the left side section*/}
 
@@ -160,7 +186,7 @@ function IssueInfo(props) {
                                 multiline
                                 variant="outlined"
                                 margin="dense"
-                                value={issueUpdate.status}
+                                value={editBtn ? issueUpdate.status : IssueViewed.status}
                                 onChange={(val) => updateValue("status", val)}
                             />
                             <TextField
@@ -170,7 +196,7 @@ function IssueInfo(props) {
                                 multiline
                                 variant="outlined"
                                 margin="dense"
-                                value={issueUpdate.assignedTo}
+                                value={editBtn ? issueUpdate.assignedTo : IssueViewed.assignedTo}
                                 onChange={(val) => updateValue("assignedTo", val)}
                             />
                         </div>
@@ -189,7 +215,7 @@ function IssueInfo(props) {
                                 shrink: true,
                                 }}
                                 variant="outlined"
-                                value={issueUpdate.solution}
+                                value={editBtn ? issueUpdate.solution : IssueViewed.solution }
                                 onChange={(val) => updateValue("solution", val)}
                             />
                         </div>
@@ -197,7 +223,7 @@ function IssueInfo(props) {
                             <p>Recommended resolution time</p>
                         </div>
                         <div className="eachFormInputArea">
-                            <RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleChange}>
+                            <RadioGroup aria-label="gender" name="gender1" value={editBtn ? value : IssueViewed.resTime } onChange={handleChange}>
                                 <FormControlLabel value="1-day" control={<Radio color="primary" />} label="1 day priority resolution." />
                                 <FormControlLabel value="3-days" control={<Radio color="primary" />} label="3 days general resolution" />
                                 <FormControlLabel value="5-days" control={<Radio color="primary" />} label="5 days general resolution" />
@@ -213,7 +239,7 @@ function IssueInfo(props) {
                         <div className="updateBtn">
                         {
                             editBtn ? (
-                                <Button variant="contained" color="primary" onClick={() => {console.log(issueUpdate)}} >
+                                <Button variant="contained" color="primary" onClick={() => handleUpdateBtn()} >
                                     Update Ticket
                                 </Button>
                             ) : (
@@ -241,7 +267,7 @@ function IssueInfo(props) {
                 <div className="spaceClass"/>
                 
                 {/*this is the right side section*/}
-                <UnEditableCard data={IssueViewed}/>
+                <UnEditableCard data={IssueViewed} issueUpdate={issueUpdate}/>
             </div>
                    
 

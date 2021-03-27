@@ -161,7 +161,7 @@
 .issueTd {
   /* width: 100%; */
   /* white-space: nowrap; */
-
+  font-weight: 500;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -169,6 +169,40 @@
   -webkit-box-orient: vertical;
 }
 
+.issueTdDone {
+  /* width: 100%; */
+  /* white-space: nowrap; */
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* number of lines to show */
+  -webkit-box-orient: vertical;
+  color: black;
+}
+.normalStatus {
+  padding: 0.3vh 1vh;
+  font-weight: 500;
+  border: 1px solid goldenrod;
+  color: goldenrod;
+  background: rgba(218, 165, 32, 0.1);
+  text-align: center;
+  border-radius: 5vh;
+  justify-content: center;
+}
+.doneStatus {
+  padding: 0.3vh 1vh;
+  font-weight: 500;
+  border: 1px solid green;
+  color: green;
+  background: rgba(0, 128, 0, 0.1);
+  text-align: center;
+  border-radius: 5vh;
+  justify-content: center;
+}
+.timeLabel {
+  color: grey;
+}
 .pagination {
   display: flex;
   flex-direction: row;

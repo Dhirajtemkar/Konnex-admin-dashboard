@@ -157,8 +157,8 @@ export function DashboardNavTree(props) {
                 />
                 <Route 
                     path="/dashboard/issues" 
-                    component={MainIssue}
-                    // render={() => <MainIssue handleUser={props.handleUser} user={props.user} />} 
+                    // component={MainIssue}
+                    render={() => <MainIssue handleUser={props.handleUser} user={props.user} />} 
                 />
                 <Route 
                     path="/dashboard/mytask" 

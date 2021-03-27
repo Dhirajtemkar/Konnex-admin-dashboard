@@ -2,11 +2,14 @@ import React, {useState} from 'react'
 import '../../../styles/issueInfo.css';
 import Button from '@material-ui/core/Button';
 import SendEmailModel from './SendEmailModel';
-
+import emailjs from 'emailjs-com';
+import { DateRange } from '@material-ui/icons';
+import SuccessEmail from "./SendEmailModel";
 
 function UnEditableCard(props) {
     const data = props.data ? props.data : {};
     const [delModal, setDelModal] = useState(false);
+    const [delSuccessModal, setDelSuccessModal] = useState(false);
 
     const handleDeleteModalOpen = () => {
         setDelModal(true)
@@ -15,9 +18,56 @@ function UnEditableCard(props) {
     const handleDeleteModalClose = () => {
         setDelModal(false)
     }
+
+    const handleSuccessModalOpen = () => {
+        setDelSuccessModal(true)
+        // setAnchorEl(null);
+    }
+    const handleSuccessModalClose = () => {
+        setDelSuccessModal(false)
+    }
+
+    const sendEmail = (e) => {
+        // e.preventDefault();
+    
+        let templateParams = {
+            from_name: "Forward ITSM",
+            to_name: 'dhiraj',
+            to_email: data.email,   
+            name: data.name,
+            email: data.email,
+            solution: props.issueUpdate.solution,
+            resTime: props.issueUpdate.resTime,
+            issue: data.issue,
+            reply_to: data.email,
+       }
+
+       emailjs.send("gmail","template_dgizkn4",{
+        from_name: "Fordward ITSM",
+        tname: data.name,
+        email: data.email,
+        issue: data.issue,
+        solution: props.issueUpdate.solution,
+        resTime: props.issueUpdate.resTime,
+        to_email: data.email,
+        reply_to: "",
+        }, 'user_308GmVOybpHk2JvRciU1z')
+        .then((result) => {
+              console.log(result.text);
+            //   handleSuccessModalOpen()
+          }, (error) => {
+              console.log(error.text);
+          });
+        //   handleSuccessModalOpen()
+      }
     return (
         <div className="nonEditableCard">
             {/*this is the header section*/}
+            {
+                delSuccessModal ? (
+                    <SuccessEmail data={props.data} delClose={handleSuccessModalClose} delModal={delSuccessModal} setDelModal={setDelSuccessModal} />
+                ) : (<div />)
+            }
             <div className="infoFormHeader">
                 <p>User Collected Information</p>
             </div>
@@ -39,7 +89,7 @@ function UnEditableCard(props) {
             </div>
             <div className="eachSection">
                 <div className="eachSectionLabel">Issue Id: </div>
-                <div className="eachSectionData">{data.tId}</div>
+                <div className="eachSectionData">#{data.tId}</div>
             </div>
             <div className="eachSection">
                 <div className="eachSectionLabel">Issue Description: </div>
@@ -47,7 +97,7 @@ function UnEditableCard(props) {
             </div>
             <div className="eachSection">
                 <div className="eachSectionLabel">Reporting Time: </div>
-                <div className="eachSectionData">{data.timestamp}</div>
+                <div className="eachSectionData">{data.dateTime}</div>
             </div>
             <div className="borderDiv"/>
             
@@ -58,7 +108,7 @@ function UnEditableCard(props) {
                 </Button>
                 {
                     delModal ? (
-                        <SendEmailModel data={props.data} delClose={handleDeleteModalClose} delModal={delModal} setDelModal={setDelModal}/>
+                        <SendEmailModel data={props.data} delClose={handleDeleteModalClose} delModal={delModal} setDelModal={setDelModal} sendEmail={sendEmail} handleSuccessModalOpen={handleSuccessModalOpen}/>
                     ) : (<div />)
                 }
                 </div>

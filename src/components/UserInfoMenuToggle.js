@@ -76,7 +76,7 @@ export default function UserInfoMenuToggle(props) {
           onClick={handleToggle}
           startIcon={<AccountCircleRoundedIcon />}
         > 
-            <div className="userName" style={{padding: "0vh 2vh 0vh 0vh", fontSize:"16px", fontWeight:"500"}}>{props.user.email}</div>
+            <div className="userName" style={{padding: "0vh 2vh 0vh 0vh", fontSize:"16px", fontWeight:"500"}}>{props.user.password}</div>
         </Button>
         <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
           {({ TransitionProps, placement }) => (

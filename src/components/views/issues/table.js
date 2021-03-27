@@ -7,8 +7,11 @@ import {Link, Route, Switch, useHistory} from 'react-router-dom';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import SpringModal from './DeleteModel';
+import Fire from "../../../Fire";
+import firebase from "firebase";
 
 function ActionBtn (props) {
+    const db = Fire.firestore();
     const history = useHistory();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -33,10 +36,16 @@ function ActionBtn (props) {
     }
 
     const handleSelfAssign = () => {
+        db.collection("testUserData").doc(props.data.tId).update({
+            assignedTo: props.user.email,
+        });
         props.selfAssignIssue(props.data)
         handleClose()
     }
 
+    const handleDbDelete = () => {
+        db.collection("testUserData").doc(props.data.tId).delete();
+    }
     const handleDeleteModalOpen = () => {
         setDelModal(true)
         // setAnchorEl(null);
@@ -73,7 +82,7 @@ function ActionBtn (props) {
                     <div >Action</div>
                 </MenuItem>
                 {
-                    props.data.status === "Un-Assigned" ? (
+                    props.data.status === "" ? (
                         <MenuItem onClick={handleSelfAssign}>
                             <div >Self Assign</div>
                         </MenuItem>
@@ -90,7 +99,7 @@ function ActionBtn (props) {
             </Menu>
             {
                 delModal ? (
-                    <SpringModal delInfo={props.data} delClose={handleDeleteModalClose} delModal={delModal} setDelModal={setDelModal}/>
+                    <SpringModal delInfo={props.data} delClose={handleDeleteModalClose} delModal={delModal} setDelModal={setDelModal} handleDbDelete={handleDbDelete}/>
                 ) : (<div />)
             }
             
@@ -152,19 +161,29 @@ function IssueTable(props) {
                     <th><p>Team</p></th>
                     <th><p>Group</p></th>
                     <th><p>Status</p></th>
+                    <th><p>Date & Time</p></th>
                     <th><p>Action</p></th>
                 </tr>
                 <tbody>
                     {
                         dataDisplayed.map((data, i) => {
+                            let d = String(data.dateTime) ? String(data.dateTime) : ""
+                            let ar = d.split(" ")
+                            let date = ar[0] ? ar[0]: ""
+                            let time = ar[1] ? ar[1]: ""
+                            console.log(ar)
                             return (
                                 <tr className="eachRow" key={data.tId}  >
-                                    <td onClick={() => handleAction(data.tId)}><p style={{marginLeft:"10px"}}>{data.tId}</p></td>
-                                    <td onClick={() => handleAction(data.tId)} width="55%"><p className="issueTd">{data.issue}</p></td>
-                                    <td onClick={() => handleAction(data.tId)}><p>{data.team}</p></td>
+                                    <td onClick={() => handleAction(data.tId)}><p style={{marginLeft:"10px"}}>#{data.tId}</p></td>
+                                    <td onClick={() => handleAction(data.tId)} width="45%"><p className={data.status === "Done" || data.status === "done" ? "issueTdDone":"issueTd"}>{data.issue}</p></td>
+                                    <td onClick={() => handleAction(data.tId)}><p style={{padding:" 0vh 1vh "}}>{data.team}</p></td>
                                     <td onClick={() => handleAction(data.tId)}><p>{data.group}</p></td>
-                                    <td onClick={() => handleAction(data.tId)}><p>{data.status}</p></td>
-                                    <td><ActionBtn data={data} selfAssignIssue={props.selfAssignIssue}/></td>
+                                    <td onClick={() => handleAction(data.tId)}>
+                                    <p
+                                    className={data.status.toLowerCase() === "done" ? "doneStatus": "normalStatus"}
+                                    >{data.status.toLowerCase()}</p></td>
+                                    <td onClick={() => handleAction(data.tId)}><p style={{display:"flex", flexDirection:"column", }}><div style={{margin:"0.5vh 0vh"}}><span className="timeLabel">date:</span>{date}</div> <div style={{margin:"0.5vh 0vh"}}><span className="timeLabel">time:</span>{time}</div></p></td>
+                                    <td><ActionBtn data={data} selfAssignIssue={props.selfAssignIssue} user={props.user} /></td>
                                 </tr>   
                             )
                         })

@@ -9,6 +9,7 @@ import SearchRoundedIcon from '@material-ui/icons/SearchRounded';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import SummaryHeader from './SummaryHeader';
+import ReactLoading from 'react-loading';
 import Fire from "../../../Fire";
 import firebase from "firebase";
 import lodash from 'lodash';
@@ -17,6 +18,8 @@ import isEqual from 'lodash/isEqual'
 var _ = require('lodash');
 // Load the core build.
 var _ = require('lodash/core');
+
+
 
 function FilterBtn (props) {
     const [BtnClicked, setBtnClicked] = useState()
@@ -60,9 +63,10 @@ function usePrevious(value) {
     return ref.current;
 }
 let dataArr = [];
-export default function Issues(props) {
+export default function Issues({page, user}) {
     const db = Fire.firestore();
 
+    const [isLoading, setIsLoading] = useState(true);
     const [dataFromDb, setDataFromDb] = useState([])
     const [dummyData, setDummyData] = useState([]);
     const originalData = Data;
@@ -73,7 +77,7 @@ export default function Issues(props) {
     const [filtersApplied, setFiltersApplied] = useState([]);
     // const [filterActive, setFilterActive] = useState();
     const [selfAssignedIssues, setSelfAssignedIssues] = useState([]);
-
+    const [summaryDataObj, setSummaryDataObj] = useState([]);
     const countOfEachPage = 10;
     const countOfPages = dummyData ? dummyData.length / countOfEachPage : 0;
     
@@ -83,6 +87,9 @@ export default function Issues(props) {
     useEffect(() =>{
         // let data = Data;
         // run only once to initialize
+        dataArr = [];
+        let sumData = [];
+
         db.collection("testUserData")
           .onSnapshot(snapshot => {
             let ob = {
@@ -95,6 +102,9 @@ export default function Issues(props) {
                 group:"",
                 team:"",
                 status:"",
+                assignedTo:"",
+                resTime:"",
+                solution:"",
             } 
             snapshot.docs.map(doc => {
                 ob = {
@@ -106,19 +116,72 @@ export default function Issues(props) {
                     dateTime:doc.data().dateTime,
                     group:doc.data().group,
                     team:doc.data().team,
-                    status:"",
+                    status:doc.data().status ? doc.data().status: "open",
+                    assignedTo:doc.data().assignedTo ? doc.data().assignedTo: "",
+                    resTime:doc.data().resTime ? doc.data().resTime: "",
+                    solution:doc.data().solution ? doc.data().solution: "", 
                 };
                 dataArr.push(ob);
             })
             setDummyData(dataArr);
             setDataFromDb(dataArr);    
-        });
 
-        
+        // sumData = [{name: "pending", data:1}, {name:"done", data:1}, {name:"high", data:1}]
+// status=== pending, done, priority === high,medium,low
+        dataArr.map((e) => {
+            let s = e.status;
+            let p = e.priority;
+            if(sumData.filter(a => a.name.toLowerCase() === s.toLowerCase()).length < 1){
+                let sCount = dataArr.filter(i => i.status === s).length;
+                sumData.push({
+                    name: s,
+                    data: sCount,
+                })
+            }
+            if(sumData.filter(a => a.name.toLowerCase() === p.toLowerCase()).length < 1) {
+                let pCount = dataArr.filter(i => i.priority === p).length;
+                sumData.push({
+                    name: p,
+                    data: pCount,
+                })
+            }
+        })
+        setSummaryDataObj(sumData);
+
+        setTimeout(function() {
+            //your code to be executed after 1 second
+            setIsLoading(false)
+          }, 500);
+
+        });
+//         let sumData = [];
+//         // sumData = [{name: "pending", data:1}, {name:"done", data:1}, {name:"high", data:1}]
+// // status=== pending, done, priority === high,medium,low
+//         dataArr.map((e) => {
+//             let s = e.status;
+//             let p = e.priority;
+//             if(sumData.filter(a => a.name === s).length < 1){
+//                 let sCount = dataArr.filter(i => i.status === s).length;
+//                 sumData.push({
+//                     name: s,
+//                     data: sCount,
+//                 })
+//             }
+//             // if(sumData.filter(a => a.name === p).length < 1) {
+//             //     let pCount = dataArr.filter(i => i.priority === p).length;
+//             //     sumData.push({
+//             //         name: p,
+//             //         data: pCount,
+//             //     })
+//             // }
+//         })
+//         setSummaryDataObj(sumData);
+        console.log(sumData);
         // if(prevData && !_.isEqual(prevData, data)) {
         // }
-        console.log(dataArr);
-    }, [dataArr])
+        // console.log(dataArr);
+        // dataArr
+    }, [page])
 
     useEffect(() => {
         if(searchedIssue){} else {
@@ -206,73 +269,85 @@ export default function Issues(props) {
 
     return (
         <div>
-            <SummaryHeader data={originalData} />
-            {/*this is where the table view will be in issues to view differnt incomming issues*/}
-            <div className="issuesTableView">
-                <div className="tableTitle">
-                    General Issues
-                </div>
-                <div className="searchFilterBar">
-                    <div className="searchDiv">
-                    <TextField
-                        id="outlined-textarea"
-                        label="Multiline Placeholder"
-                        placeholder="Placeholder"
-                        multiline
-                        size="small"
-                        variant="outlined"
-                        onChange={handleSearch}
-                        // className="searchBar"
-                    />
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        className={classes.button}
-                        endIcon={<SearchRoundedIcon />}
-                        onClick={handleSearchBtn}
-                    >
-                        Search
-                    </Button>
+            {
+                isLoading ? (
+                    <div style={{marginLeft:"50%", marginTop: "20%"}}>
+                        <ReactLoading type={"spin"} color={"#0000af"} />
                     </div>
-                    {/*<div className="filterDiv">
-                        <FilterBtn name="Un-Assigned" featureApplication={featureApplication} setFilterActive={setFilterActive}/>
-                        <FilterBtn name="Group L1" featureApplication={featureApplication} setFilterActive={setFilterActive}/>
-    </div>*/}
-                </div>
-                
-                <IssueTable 
-                    dataArr={dataArr}
-                    dummyData={dummyData} 
-                    countOfEachPage={countOfEachPage} 
-                    pageSelected={pageSelected}
-                    selfAssignIssue={selfAssignIssue}     
-                />
-                
-                <div className="pagination">
-                    
-                    <ul className="paginationUl">
-                        {
-                            jumpPage === "forward" ? (<div style={{padding:"1vh"}}>...</div>) : null
-                        }
-                        {paginationBar()}
-                        {
-                            jumpPage === "backward" ? (<div style={{padding:"1vh"}}>...</div>) : null
-                        }
-                    </ul>
-                    
-                    <div onClick={() => jumpPageBtnClick("backward")} 
-                        className={jumpPage === "backward" ? "selectedPaginationIcon" : "paginationIcon"}>
-                        <div><ChevronLeftRoundedIcon /></div>
-                    </div>
-                    <div style={{padding:"1vh"}}>1-5</div>
-                    <div onClick={() => jumpPageBtnClick("forward")} 
-                        className={jumpPage === "forward" ? "selectedPaginationIcon" : "paginationIcon"}>
-                        <div><ChevronRightRoundedIcon /></div>
-                    </div>                
-                </div>
-            </div>
+                ) : (
+                    <div>
+                        <SummaryHeader data={originalData} summaryDataObj={summaryDataObj}/>
+                        {/*this is where the table view will be in issues to view differnt incomming issues*/}
+                        <div className="issuesTableView">
+                            <div className="tableTitle">
+                                General Issues
+                            </div>
+                            <div className="searchFilterBar">
+                                <div className="searchDiv">
+                                <TextField
+                                    id="outlined-textarea"
+                                    label="Multiline Placeholder"
+                                    placeholder="Placeholder"
+                                    multiline
+                                    size="small"
+                                    variant="outlined"
+                                    onChange={handleSearch}
+                                    // className="searchBar"
+                                />
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    className={classes.button}
+                                    endIcon={<SearchRoundedIcon />}
+                                    onClick={handleSearchBtn}
+                                >
+                                    Search
+                                </Button>
+                                </div>
+                                {/*<div className="filterDiv">
+                                    <FilterBtn name="Un-Assigned" featureApplication={featureApplication} setFilterActive={setFilterActive}/>
+                                    <FilterBtn name="Group L1" featureApplication={featureApplication} setFilterActive={setFilterActive}/>
+                </div>*/}
+                            </div>
+                            
+                            <IssueTable 
+                                dataArr={dataArr}
+                                dummyData={dummyData} 
+                                countOfEachPage={countOfEachPage} 
+                                pageSelected={pageSelected}
+                                selfAssignIssue={selfAssignIssue}  
+                                user={user}   
+                            />
+                            
+                            <div className="pagination">
+                                
+                                <ul className="paginationUl">
+                                    {
+                                        jumpPage === "forward" ? (<div style={{padding:"1vh"}}>...</div>) : null
+                                    }
+                                    {paginationBar()}
+                                    {
+                                        jumpPage === "backward" ? (<div style={{padding:"1vh"}}>...</div>) : null
+                                    }
+                                </ul>
+                                
+                                <div onClick={() => jumpPageBtnClick("backward")} 
+                                    className={jumpPage === "backward" ? "selectedPaginationIcon" : "paginationIcon"}>
+                                    <div><ChevronLeftRoundedIcon /></div>
+                                </div>
+                                <div style={{padding:"1vh"}}>1-5</div>
+                                <div onClick={() => jumpPageBtnClick("forward")} 
+                                    className={jumpPage === "forward" ? "selectedPaginationIcon" : "paginationIcon"}>
+                                    <div><ChevronRightRoundedIcon /></div>
+                                </div>                
+                            </div>
+                        </div>
 
-            
+                        
+                    </div>
+                )
+            }
         </div>
+        
     )
 }
