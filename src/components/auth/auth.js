@@ -10,8 +10,8 @@ export default function Auth(props) {
                 <Route path="/auth/login" render={() => <Login handleUser={props.handleUser} />} />
                 <Route 
                 path="/auth/signup" 
-                // render={() => <SignUp handleUser={props.handleUser} />} 
-                component={SignUp}
+                render={() => <SignUp handleUser={props.handleUser} />} 
+                // component={SignUp}
                 />
                 <Redirect from="/auth/" to="/auth/login" />
             </Switch>

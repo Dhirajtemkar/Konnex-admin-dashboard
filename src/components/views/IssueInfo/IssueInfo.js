@@ -117,7 +117,7 @@ function IssueInfo(props) {
                     <div>Issue Id: <span>#{IssueViewed.tId}</span></div>
                     <div className="noteCard">
                         <div className="noteTriangle"/>
-                        <span style={{color:"goldenrod", fontSize:"12px"}}>note:</span> ticket raised by bot.
+                        <span style={{color:"goldenrod", fontSize:"12px", marginRight: "0.7vh"}}>note:</span> ticket raised by bot.
                     </div>
                 </div>
             </div>

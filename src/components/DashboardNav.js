@@ -11,7 +11,7 @@ import IssueSVG from '../assets/discuss-issue.svg';
 import checkSVG from '../assets/clipboard.svg';
 import userSVG from '../assets/user.svg';
 import settingsSVG from '../assets/settings.svg';
-import MyTask from './views/MyTask';
+import MyTask from './views/mytask/MyTask';
 import testLogo from '../assets/testLogo.svg';
 import MiniDrawer from './NewNavBar';
 import { Button, IconButton} from '@material-ui/core'

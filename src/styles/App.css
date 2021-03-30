@@ -17,8 +17,8 @@
 .logo {
   width: 85%;
   /* height: 2em; */
-  /* border: 2px solid black; */
-  background: #011485;
+  /* border: 2px solid black; #011485*/
+  background: #2f37ca;
   margin: 0.5em auto;
   padding: 5px;
   border-radius: 7px;
@@ -37,7 +37,7 @@
 .logo1 {
   width: 85%;
   /* height: 2em; */
-  /* border: 2px solid black; */
+  /* border: 2px solid black; #011485 */
   background: #011485;
   margin: 0.5em auto;
   padding: 5px;
@@ -70,6 +70,7 @@
   z-index: 10;
   /* background: linear-gradient(180deg, #f0f0f6 0%, #ffffff 100%); */
   background: #3f50b5;
+  /* background: #525aeb; */
 }
 .toggleNav {
   flex: 0;
