@@ -1,11 +1,11 @@
 .link {
   text-decoration: none;
-  color: rgba(255, 255, 255, 0.651);
-  font-weight: 500;
-  font-size: 0.9em;
+  /* color: rgba(255, 255, 255, 0.651); */
+  color: #ffffff;
+  font-weight: 400;
+  font-size: 0.85em;
   justify-content: baseline;
 }
-
 .Dashboard {
   width: 100%;
   display: flex;
@@ -69,8 +69,9 @@
   border-right: -2vh solid white;
   z-index: 10;
   /* background: linear-gradient(180deg, #f0f0f6 0%, #ffffff 100%); */
-  background: #3f50b5;
-  /* background: #525aeb; */
+
+  /* background: #3f50b5; */
+  background: #1e25b8;
 }
 .toggleNav {
   flex: 0;
@@ -192,6 +193,11 @@
   font-size: 18px;
   font-weight: 500;
 }
+.eachNavIndi:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .toggleBtns {
   flex: 0.2;
   display: flex;

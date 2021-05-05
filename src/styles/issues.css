@@ -20,6 +20,7 @@
 .overView {
   display: flex;
   flex-direction: row;
+  padding: 0 1vh;
   /* width: 80%; */
   /* margin: auto; */
   /* border: 2px solid black; */

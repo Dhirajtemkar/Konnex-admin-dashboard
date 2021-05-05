@@ -19,17 +19,13 @@ var _ = require('lodash');
 // Load the core build.
 var _ = require('lodash/core');
 
-
-
 function FilterBtn (props) {
     const [BtnClicked, setBtnClicked] = useState()
-
     const handleClick = (val) => {
         setBtnClicked(!BtnClicked)
         props.setFilterActive(!BtnClicked)
         props.featureApplication(props.name)
     }
-
     return(
         <div 
         onClick={handleClick} 
@@ -75,17 +71,13 @@ export default function Issues({page, user}) {
     const [pageSelected, setPageSelected] = useState(1);
     const [searchedIssue, setSearchedIssue] = useState("");
     const [filtersApplied, setFiltersApplied] = useState([]);
-    // const [filterActive, setFilterActive] = useState();
     const [selfAssignedIssues, setSelfAssignedIssues] = useState([]);
     const [summaryDataObj, setSummaryDataObj] = useState([]);
     const countOfEachPage = 10;
     const countOfPages = dummyData ? dummyData.length / countOfEachPage : 0;
-    
     const prevData = usePrevious(dummyData);
 
-    
     useEffect(() =>{
-        // let data = Data;
         // run only once to initialize
         dataArr = [];
         let sumData = [];
@@ -127,7 +119,7 @@ export default function Issues({page, user}) {
             setDataFromDb(dataArr);    
 
         // sumData = [{name: "pending", data:1}, {name:"done", data:1}, {name:"high", data:1}]
-// status=== pending, done, priority === high,medium,low
+        // status=== pending, done, priority === high,medium,low
         dataArr.map((e) => {
             let s = e.status;
             let p = e.priority;
@@ -146,6 +138,42 @@ export default function Issues({page, user}) {
                 })
             }
         })
+        if(sumData.filter(a => a.name.toLowerCase() === "pending").length < 1){
+            sumData.push({
+                name: "Pending",
+                data: 0,
+            })
+        }
+        if(sumData.filter(a => a.name.toLowerCase() === "done").length < 1){
+            sumData.push({
+                name: "Done",
+                data: 0,
+            })
+        }
+        if(sumData.filter(a => a.name.toLowerCase() === "high").length < 1){
+            sumData.push({
+                name: "High",
+                data: 0,
+            })
+        }
+        if(sumData.filter(a => a.name.toLowerCase() === "medium").length < 1){
+            sumData.push({
+                name: "Medium",
+                data: 0,
+            })
+        }
+        if(sumData.filter(a => a.name.toLowerCase() === "low").length < 1){
+            sumData.push({
+                name: "Low",
+                data: 0,
+            })
+        }
+        if(sumData.filter(a => a.name.toLowerCase() === "open").length < 1){
+            sumData.push({
+                name: "Open",
+                data: 0,
+            })
+        }
         setSummaryDataObj(sumData);
 
         setTimeout(function() {
@@ -154,43 +182,13 @@ export default function Issues({page, user}) {
           }, 500);
 
         });
-//         let sumData = [];
-//         // sumData = [{name: "pending", data:1}, {name:"done", data:1}, {name:"high", data:1}]
-// // status=== pending, done, priority === high,medium,low
-//         dataArr.map((e) => {
-//             let s = e.status;
-//             let p = e.priority;
-//             if(sumData.filter(a => a.name === s).length < 1){
-//                 let sCount = dataArr.filter(i => i.status === s).length;
-//                 sumData.push({
-//                     name: s,
-//                     data: sCount,
-//                 })
-//             }
-//             // if(sumData.filter(a => a.name === p).length < 1) {
-//             //     let pCount = dataArr.filter(i => i.priority === p).length;
-//             //     sumData.push({
-//             //         name: p,
-//             //         data: pCount,
-//             //     })
-//             // }
-//         })
-//         setSummaryDataObj(sumData);
-        console.log(sumData);
-        // if(prevData && !_.isEqual(prevData, data)) {
-        // }
-        // console.log(dataArr);
-        // dataArr
+        // console.log(sumData);
     }, [page])
 
     useEffect(() => {
         if(searchedIssue){} else {
             setDummyData(dataFromDb);
         }
-        // if(filtersApplied.length !==0){
-        //     let data = dummyData;
-        //     const filters = filtersApplied;
-        // }
     }, [searchedIssue])
 
     const paginationBar = () => {
@@ -209,7 +207,6 @@ export default function Issues({page, user}) {
     }
 
     const jumpPageBtnClick = (val) => {
-        // setPageSelected(null) 
         setJumpPage(val)
     }
 
@@ -223,7 +220,6 @@ export default function Issues({page, user}) {
     function findIssueInfo(issue, searchString){
         return issue.toLowerCase().includes(searchString.toLowerCase());
     }
-
     const handleSearchBtn = () => {
         const data = dummyData;
 
@@ -236,30 +232,9 @@ export default function Issues({page, user}) {
         }
     }
 
-    // const featureApplication = (val) => {
-    //     let dataGot = dummyData;
-
-    //     let data = filtersApplied;
-    //     let loc = false;
-    //     data.map((e, i) => {
-    //         if(e === val){
-    //             data.splice(i, 1);
-    //             loc = true;
-    //         }
-    //     })
-    //     if (loc === false) {
-    //         data.push(val)
-    //     }
-    //     // console.log(data)
-    //     setFiltersApplied(data)
-
-    // }
-
     const selfAssignIssue = (val) => {
         let data = selfAssignedIssues;
-
         const existData = data.filter(i => i.tId === val.tId);
-
         if(existData.length === 0){
             data.push(val)
         } else {}
@@ -276,7 +251,7 @@ export default function Issues({page, user}) {
                     </div>
                 ) : (
                     <div>
-                        <SummaryHeader data={originalData} summaryDataObj={summaryDataObj}/>
+                        <SummaryHeader data={originalData} summaryDataObj={summaryDataObj}  title={"Issue Summary"} />
                         {/*this is where the table view will be in issues to view differnt incomming issues*/}
                         <div className="issuesTableView">
                             <div className="tableTitle">
@@ -304,12 +279,7 @@ export default function Issues({page, user}) {
                                     Search
                                 </Button>
                                 </div>
-                                {/*<div className="filterDiv">
-                                    <FilterBtn name="Un-Assigned" featureApplication={featureApplication} setFilterActive={setFilterActive}/>
-                                    <FilterBtn name="Group L1" featureApplication={featureApplication} setFilterActive={setFilterActive}/>
-                </div>*/}
                             </div>
-                            
                             <IssueTable 
                                 dataArr={dataArr}
                                 dummyData={dummyData} 
@@ -318,9 +288,7 @@ export default function Issues({page, user}) {
                                 selfAssignIssue={selfAssignIssue}  
                                 user={user}   
                             />
-                            
                             <div className="pagination">
-                                
                                 <ul className="paginationUl">
                                     {
                                         jumpPage === "forward" ? (<div style={{padding:"1vh"}}>...</div>) : null
@@ -330,7 +298,6 @@ export default function Issues({page, user}) {
                                         jumpPage === "backward" ? (<div style={{padding:"1vh"}}>...</div>) : null
                                     }
                                 </ul>
-                                
                                 <div onClick={() => jumpPageBtnClick("backward")} 
                                     className={jumpPage === "backward" ? "selectedPaginationIcon" : "paginationIcon"}>
                                     <div><ChevronLeftRoundedIcon /></div>
@@ -342,12 +309,9 @@ export default function Issues({page, user}) {
                                 </div>                
                             </div>
                         </div>
-
-                        
                     </div>
                 )
             }
         </div>
-        
     )
 }

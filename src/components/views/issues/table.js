@@ -31,13 +31,14 @@ function ActionBtn (props) {
             state: {
                 name: "dhiraj",
                 tId: props.data.tId,
+                issueInfo: props.data
             }
         })
     }
 
     const handleSelfAssign = () => {
         db.collection("testUserData").doc(props.data.tId).update({
-            assignedTo: props.user.email,
+            assignedTo: props.user.displayName,
         });
         props.selfAssignIssue(props.data)
         handleClose()
@@ -87,7 +88,7 @@ function ActionBtn (props) {
                             <div >Self Assign</div>
                         </MenuItem>
                     ) : (
-                        <MenuItem onClick={handleSelfAssign} disabled>
+                        <MenuItem onClick={handleSelfAssign}>
                             <div >Self Assign</div>
                         </MenuItem>
                     )

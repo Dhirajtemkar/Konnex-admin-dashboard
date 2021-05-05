@@ -55,17 +55,24 @@ export default function UserInfoMenuToggle(props) {
   }, [open]);
 
   const handleLogOut = () => {
-    props.handleUser(null)
+    // props.handleUser(null);
+    window.location.reload(false);
   }
   const handleMyTask =() => {
     history.push({
         pathname: '/dashboard/mytask',
         state: {
             name: "dhiraj",
+            issueInfo: null,
         }
     })
     setOpen(false);
 
+  }
+  const handleProfile = () => {
+    history.push({
+      pathname: '/dashboard/profile'
+    })
   }
   return (
       <div>
@@ -87,7 +94,7 @@ export default function UserInfoMenuToggle(props) {
               <Paper>
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                    <MenuItem onClick={handleClose} disabled>Profile</MenuItem>
+                    <MenuItem onClick={handleProfile}>Profile</MenuItem>
                     <MenuItem onClick={handleMyTask} >My Task</MenuItem>
                     <MenuItem onClick={handleLogOut}><div style={{color:"red"}}>Logout</div></MenuItem>
                   </MenuList>

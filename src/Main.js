@@ -7,19 +7,49 @@ import Fire from "./Fire";
 function Main() {
     const history = useHistory();
 
-    const [user, setUser] = useState({email:"dhiraj", password: "dhiraj"});
+    const [user, setUser] = useState();
     const [newUser, setNewUser] = useState();
     
+    useEffect(() => {
+        var user = Fire.auth().currentUser;
+        console.log(user)
+
+        if (user) {
+            // setNewUser(user)
+            // setUser({
+            //     displayName: user.displayName,
+            //     email: user.email,
+            //     token: user.refreshToken,
+            // })
+        // User is signed in.
+        } else {
+            history.push({
+                pathname: '/auth/login',
+                state: {
+                    name: "dhiraj",
+                    issueInfo: null,
+                }
+            })
+        // No user is signed in.
+        }
+    }, [])
+
     const handleUser = (val) => {
         Fire.auth().onAuthStateChanged(function(user) {
         if (user) {
-            console.log(user)
+            // console.log(user)
             setNewUser(user)
+            setUser({
+                displayName: user.displayName,
+                email: user.email,
+                token: user.refreshToken,
+            })
             // User is signed in.
             history.push({
                 pathname: '/dashboard/home',
                 state: {
                     name: "dhiraj",
+                    issueInfo: null,
                 }
             })
         } else {

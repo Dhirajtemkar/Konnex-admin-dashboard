@@ -1,17 +1,10 @@
 import React, {useEffect, useState} from 'react'
-import { Link, Switch, Route, Redirect } from "react-router-dom";
-
 import '../../../styles/home.css';
-import {Popper, Typography, Button, Fade, Paper} from '@material-ui/core';
-
-import Fire from "../../../Fire";
-import firebase from 'firebase';
-
-import { makeStyles } from '@material-ui/core/styles';
 import VerticalBar from './VerticalChart';
 import SummaryHeader from '../issues/SummaryHeader';
-
 import ReactLoading from 'react-loading';
+import Fire from "../../../Fire";
+import firebase from 'firebase';
 
 export default function Home({ page }) {
     let db = Fire.firestore();
@@ -26,7 +19,6 @@ export default function Home({ page }) {
     useEffect(() =>{
         let dataArr = [];
         let sumData = [];
-
         // run only once to initialize
         db.collection("testUserData")
           .onSnapshot(snapshot => {
@@ -56,7 +48,6 @@ export default function Home({ page }) {
                 dataArr.push(ob);
             })
             setDataFromDb(dataArr);
-            
 
             dataArr.map((e) => {
                 let s = e.status ? e.status : "open";
@@ -76,61 +67,49 @@ export default function Home({ page }) {
                     })
                 }
             })
+            if(sumData.filter(a => a.name.toLowerCase() === "pending").length < 1){
+                sumData.push({
+                    name: "Pending",
+                    data: 0,
+                })
+            }
+            if(sumData.filter(a => a.name.toLowerCase() === "done").length < 1){
+                sumData.push({
+                    name: "Done",
+                    data: 0,
+                })
+            }
+            if(sumData.filter(a => a.name.toLowerCase() === "high").length < 1){
+                sumData.push({
+                    name: "High",
+                    data: 0,
+                })
+            }
+            if(sumData.filter(a => a.name.toLowerCase() === "medium").length < 1){
+                sumData.push({
+                    name: "Medium",
+                    data: 0,
+                })
+            }
+            if(sumData.filter(a => a.name.toLowerCase() === "low").length < 1){
+                sumData.push({
+                    name: "Low",
+                    data: 0,
+                })
+            } 
+            if(sumData.filter(a => a.name.toLowerCase() === "open").length < 1){
+                sumData.push({
+                    name: "Open",
+                    data: 0,
+                })
+            }
             setSummaryDataObj(sumData);
 
             setTimeout(function() {
                 //your code to be executed after 1 second
                 setIsLoading(false)
               }, 1000);
-
-            // let data = dataFromDb ? dataFromDb : [];
-            // let dcount = [];
-            // let gLabel = [];
-            // let gCount = [];
-
-            // let scount = summaryDataObj ? summaryDataObj : [];
-            // let sLabel = [];
-            // let sCount = [];
-
-            // // {
-            // //     name: "",
-            // //     count: "",
-            // // }
-            // data.map((e) => {
-            //     let g = e.group;
-            //     if(dcount.filter(a => a.name === g).length < 1) {
-            //         let count = data.filter(i => i.group === g).length;
-            //         dcount.push({
-            //             name: g,
-            //             count: count,
-            //         })
-            //     }
-            // })
-
-            // dcount.map((e) => {
-            //     gLabel.push(e.name);
-            //     gCount.push(e.count);
-            // })
-
-            // scount.map((e) => {
-            //     sLabel.push(e.name);
-            //     sCount.push(e.data);
-            // })
-
-            // // console.log(dcount);
-            // setGroupCount(dcount);
-            // setGroupLabel(gLabel);
-            // setGroupCount(gCount);
-
-            // setSummaryLabel(sLabel);
-            // setSummaryCount(sCount);
         })
-
-        // setDummyData(dataArr);
-        // if(prevData && !_.isEqual(prevData, data)) {
-        // }
-        // console.log(sumData);
-        // dataFromDb
     }, [page])
 
     useEffect(() => {
@@ -144,10 +123,6 @@ export default function Home({ page }) {
         let sLabel = [];
         let sCount = [];
 
-        // {
-        //     name: "",
-        //     count: "",
-        // }
         data.map((e) => {
             let g = e.group;
             if(dcount.filter(a => a.name === g).length < 1) {
@@ -188,18 +163,11 @@ export default function Home({ page }) {
                     </div>
                 ) : (
                 <div>
-                    <SummaryHeader summaryDataObj={summaryDataObj}/>
+                    <SummaryHeader summaryDataObj={summaryDataObj} title={"Issue Summary"}/>
                     <div style={{display:"flex", marginTop:"4vh"}}>            
                         <VerticalBar groupLabel={groupLabel} groupCount={groupCount} title={"Groups of Issues"}/>
                         <VerticalBar groupLabel={summaryLabel} groupCount={summaryCount} title={"Summary of Issues"}/>
                     </div>
-                    {/*Go to: <Link to="/dashboard/home/index/settings">Settings</Link>
-                    <Switch>
-                        <Route exact path={'/dashboard/home'} component={() => <Index />} />
-                        <Route path={'/dashboard/home/index/settings'} component={() => <Settings page={"new"} />} />
-                        <Redirect from="*" to="/dashboard/home" />
-                    </Switch>*/}
-                    
                 </div>)
             }
         </div>

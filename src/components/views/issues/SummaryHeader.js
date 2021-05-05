@@ -40,7 +40,7 @@ export default function SummaryHeader(props){
                     <p className={data < 5 ? "overViewN" : "overViewNRed"}>{data}</p>
                 </div>
                 {
-                    index > 3 ? (<div/>) : (<div className="divider" />)
+                    index > 4 ? (<div/>) : (<div className="divider" />)
                 }
                 
             </div>
@@ -51,7 +51,7 @@ export default function SummaryHeader(props){
         <div className="header">
             {/*<p className="headerT..">Issue Summary</p>*/}
             <div className="tableTitle">
-                Issue Summary
+                {props.title}
             </div>
             <div className="overView">
             {summaryData.map((e, i) => (<IndividualSummary name={e.name} data={e.data} index={i}/>))}
