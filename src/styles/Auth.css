@@ -1,0 +1,188 @@
+.mainLogin {
+  width: 100%;
+  max-height: 100vh;
+  display: flex;
+  flex-direction: row;
+}
+
+.leftSide {
+  flex: 0.6;
+  height: 100vh;
+  /* background: #3f50b5; */
+  background: linear-gradient(60deg, #3f50b5 45%, #3f51b5e7 80%, #3f51b5d3 90%);
+  z-index: -1;
+}
+.topRightBallS {
+  width: 40vh;
+  height: 40vh;
+  background: rgba(255, 255, 255, 0.12);
+  position: absolute;
+  border-radius: 40vh;
+  right: 70vh;
+  top: -20vh;
+}
+.topRightBallB {
+  width: 60vh;
+  height: 60vh;
+  background: rgba(255, 255, 255, 0.07);
+  position: absolute;
+  border-radius: 40vh;
+  right: 60vh;
+  top: -30vh;
+}
+.bottomLeftBallS {
+  width: 60vh;
+  height: 60vh;
+  background: rgba(255, 255, 255, 0.1);
+  position: absolute;
+  border-radius: 40vh;
+  left: -30vh;
+  bottom: -30vh;
+}
+.dotsTop {
+  position: absolute;
+  top: 2vh;
+  left: 2vh;
+  opacity: 0.5;
+}
+.dotsBottom {
+  position: absolute;
+  top: 90vh;
+  left: 119.3vh;
+  /* right: 50vh; */
+}
+.centerTextLeft {
+  text-align: center;
+  color: white;
+  margin-top: 20vh;
+}
+.centerMainText {
+  font-size: 46px;
+  font-weight: 600;
+  text-align: left;
+  margin-left: 35vh;
+  width: auto;
+}
+.centerTextBelow {
+  margin-left: 35vh;
+  margin-top: 4vh;
+}
+.bulletText {
+  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: row;
+  /* justify-content: center; */
+  align-items: center;
+  margin: 1.5vh 0vh;
+  font-size: 16px;
+  font-weight: 400;
+  color: white;
+  /* padding-left: 2vh; */
+}
+.bulletIcon {
+  padding: 0.7vh 1vh 0.6vh 1vh;
+  border-radius: 4vh;
+  background: rgba(255, 255, 255, 0.198);
+  color: white;
+  margin-right: 2vh;
+  align-items: center;
+  text-align: center;
+  justify-content: baseline;
+}
+.rightSide {
+  flex: 0.4;
+  height: 100vh;
+}
+.AuthNav {
+  display: flex;
+  flex-direction: row-reverse;
+  width: 90%;
+  margin: 1vh auto 0vh auto;
+  /* padding-right: 2vh; */
+}
+
+.logo {
+  flex: 0.35;
+  /* width: 85%; */
+  /* height: 2em; */
+  /* border: 2px solid black; */
+  /* background: #011485; #3f50b5*/
+  background: #2f37ca;
+  margin: 0.5em 2vh 0 0;
+  padding: 7px;
+  border-radius: 7px;
+  display: flex;
+  flex-direction: row;
+}
+.logo p {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 18px;
+  /* border: 1px solid white; */
+  margin: 5px 2px;
+  flex: 0.9;
+  padding-left: 1vh;
+}
+.navBtn {
+  flex: 0.6;
+  /* border: 1px solid black; */
+  margin-left: 0;
+  justify-content: baseline;
+  align-items: center;
+  margin-top: 0.8em;
+  font-weight: 600;
+  text-decoration: none;
+}
+.authFormTitle {
+  text-align: center;
+  font-size: 31px;
+  font-weight: 600;
+  margin-top: 15vh;
+  margin-bottom: 3vh;
+}
+.authFormTitle1 {
+  text-align: center;
+  font-size: 31px;
+  font-weight: 600;
+  margin-top: 8vh;
+  margin-bottom: 3vh;
+}
+.authForm {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  margin: auto;
+}
+.spaceDiv {
+  margin: 0.5em 0;
+}
+.textInBtn {
+  padding: 0.15vh 3.5vh;
+  font-weight: 550;
+  text-decoration: none;
+}
+.formNote {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  /* padding: 0 1vh; */
+}
+.footNote1 {
+  margin-left: 2vh;
+  font-size: 16px;
+  font-weight: 500;
+  color: grey;
+}
+.footNote2 {
+  margin-right: 2vh;
+  font-size: 16px;
+  font-weight: 500;
+  color: #3f50b5;
+}
+.errorText {
+  font-size: 14px;
+  color: red;
+  font-weight: 500;
+  margin-top: 0.5vh;
+}
