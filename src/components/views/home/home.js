@@ -5,6 +5,7 @@ import SummaryHeader from '../issues/SummaryHeader';
 import ReactLoading from 'react-loading';
 import Fire from "../../../Fire";
 import firebase from 'firebase';
+import LineChart from './LineChart';
 
 export default function Home({ page }) {
     let db = Fire.firestore();
@@ -164,9 +165,13 @@ export default function Home({ page }) {
                 ) : (
                 <div>
                     <SummaryHeader summaryDataObj={summaryDataObj} title={"Issue Summary"}/>
-                    <div style={{display:"flex", marginTop:"4vh"}}>            
+                    <div style={{display:"flex", margin:"4vh auto"}}>            
                         <VerticalBar groupLabel={groupLabel} groupCount={groupCount} title={"Groups of Issues"}/>
                         <VerticalBar groupLabel={summaryLabel} groupCount={summaryCount} title={"Summary of Issues"}/>
+                    </div>
+                    <div style={{display:"flex", margin:"4vh auto"}}>            
+                        <LineChart/>
+                        <VerticalBar groupLabel={["Airbus title 1..", "Zero Emission", "Hydrogen, An important.."]} groupCount={[10, 9, 5]} title={"Top 3 Submitted Suggestion"}/>
                     </div>
                 </div>)
             }
